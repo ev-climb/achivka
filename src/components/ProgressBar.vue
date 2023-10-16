@@ -43,11 +43,11 @@
       justify-content: center;
       align-items: center;
       .treasure {
-        height: 80%;
+        height: 100px;
         object-fit: cover;
         position: absolute;
-        right: 1%;
-        top: 10%;
+        right: 10px;
+        top: 20px;
       }
       span {
         font-size: 60px;
