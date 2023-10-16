@@ -1,15 +1,11 @@
 <template>
   <header>
-    <router-link to="/">
-      <img class="logo" src="../assets/images/icons/logo.png" alt="logo" />
-    </router-link>
+    <img class="logo" src="../assets/images/icons/logo.png" alt="logo" />
     <div>
-      <router-link to="/parrents">
-        <div class="cabinet">
-          <img src="../assets/images/icons/lock.svg" alt="lock" />
-          Кабинет родителей
-        </div>
-      </router-link>
+      <div class="cabinet">
+        <img src="../assets/images/icons/lock.svg" alt="lock" />
+        Кабинет родителей
+      </div>
       <div class="avatar-block">
         <img class="avatar" src="../assets/images/icons/avatar-girl.svg" alt="avatar" />
         Василиса
@@ -19,11 +15,7 @@
   </header>
 </template>
 
-<script setup>
-  import { inject } from 'vue';
-
-  const authorizationScreenOpen = inject('authorizationScreenOpen');
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
   header {
@@ -48,7 +40,6 @@
         gap: 10px;
         font-weight: 500;
         font-size: 20px;
-        cursor: pointer;
         img {
           height: 40px;
           object-fit: cover;

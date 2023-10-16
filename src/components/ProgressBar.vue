@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-  import { computed, inject } from 'vue';
+  import { computed, ref } from 'vue';
 
   //Шкала прогресса
-  const progress = inject('progress');
+  const progress = ref(1);
   const visibleProgress = computed(() => {
     if (progress.value < 3) {
       return `width:3%`;
@@ -26,7 +26,7 @@
 
 <style lang="scss" scoped>
   .progressBarBlock {
-    margin-top: 10vh;
+    margin-top: 170px;
     width: 100%;
     position: relative;
     display: flex;
@@ -43,25 +43,23 @@
       justify-content: center;
       align-items: center;
       .treasure {
-        height: 80%;
+        height: 100px;
         object-fit: cover;
         position: absolute;
-        right: 1%;
-        top: 10%;
+        right: 10px;
+        top: 20px;
       }
       span {
         font-size: 60px;
         font-weight: 700;
         color: white;
-        z-index: 1;
       }
       .progressFill {
         position: absolute;
         left: 0;
         height: 100%;
-        max-width: 98%;
         background: #e906f597;
-        box-shadow: 0px 0px 6px 5px rgba(236, 0, 251, 0.6);
+        box-shadow: 7px 0px 8px 0px rgba(236, 0, 251, 0.2);
         border-radius: 40px 0 0 40px;
 
         .avatar {
