@@ -43,23 +43,21 @@
       justify-content: center;
       align-items: center;
       .treasure {
-        height: 80%;
+        height: 100px;
         object-fit: cover;
         position: absolute;
-        right: 1%;
-        top: 10%;
+        right: 10px;
+        top: 20px;
       }
       span {
         font-size: 60px;
         font-weight: 700;
         color: white;
-        z-index: 1;
       }
       .progressFill {
         position: absolute;
         left: 0;
         height: 100%;
-        max-width: 98%;
         background: #e906f597;
         box-shadow: 7px 0px 8px 0px rgba(236, 0, 251, 0.2);
         border-radius: 40px 0 0 40px;
