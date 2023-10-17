@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-  import { computed, ref } from 'vue';
+  import { computed, inject } from 'vue';
 
   //Шкала прогресса
-  const progress = ref(1);
+  const progress = inject('progress');
   const visibleProgress = computed(() => {
     if (progress.value < 3) {
       return `width:3%`;

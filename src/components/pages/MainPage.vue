@@ -2,24 +2,51 @@
   <main>
     <h2>Я только что...</h2>
     <ul class="listBlock">
-      <li v-for="(todo, index) in todoList" :key="index">{{ todo.text }}</li>
+      <template v-for="(todo, index) in todoList" :key="index">
+        <li v-if="todo.done" draggable="true" @dragstart="onDragStart($event, todo)">
+          {{ todo.text }}
+        </li>
+      </template>
     </ul>
-    <ProgressBar />
+    <ProgressBar @drop="onDrop($event)" @dragover.prevent @dragenter.prevent />
   </main>
 </template>
 
 <script setup>
   import ProgressBar from '../ProgressBar.vue';
-  import { ref } from 'vue';
+  import { ref, provide, computed } from 'vue';
+
   const todoList = ref([
-    { text: 'Сделала домашние задания', scores: 10 },
-    { text: 'Посмотрела мультфильмы', scores: -5 },
-    { text: 'Сама заправила постель', scores: 5 },
-    { text: 'Поиграла на планшете', scores: -5 },
-    { text: 'Почистила зубы', scores: 5 },
-    { text: 'Сделала зарядку', scores: 10 },
-    { text: 'Сделала уборку в комнате', scores: 10 },
+    { id: 1, text: 'Сделала домашние задания', scores: 10, done: true },
+    { id: 2, text: 'Сама заправила постель', scores: 5, done: true },
+    { id: 3, text: 'Посмотрела мультфильмы', scores: -5, done: true },
+    { id: 4, text: 'Поиграла на планшете', scores: -5, done: true },
+    { id: 5, text: 'Почистила зубы', scores: 5, done: true },
+    { id: 6, text: 'Сделала зарядку', scores: 10, done: true },
+    { id: 7, text: 'Сделала уборку в комнате', scores: 10, done: true },
   ]);
+
+  const scoreCounter = ref(0);
+  const nextLevelScores = ref(1000);
+  const progress = computed(() => {
+    return (100 / nextLevelScores.value) * scoreCounter.value;
+  });
+
+  //логика перетаскивания элементов
+  function onDragStart(event, item) {
+    event.dataTransfer.dropEffect = 'move';
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('itemId', item.id.toString());
+  }
+  function onDrop(event) {
+    const itemId = parseInt(event.dataTransfer.getData('itemId'));
+    const todo = todoList.value.filter((todo) => todo.id === itemId);
+    todoList.value = todoList.value.filter((todo) => todo.id != itemId);
+    scoreCounter.value = scoreCounter.value + todo[0].scores;
+    console.log(scoreCounter.value, 'scoreCounter.value');
+  }
+
+  provide('progress', progress);
 </script>
 
 <style lang="scss" scoped>
