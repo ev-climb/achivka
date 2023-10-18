@@ -59,7 +59,7 @@
         left: 0;
         height: 100%;
         background: #e906f597;
-        box-shadow: 7px 0px 8px 0px rgba(236, 0, 251, 0.2);
+        box-shadow: 0px 0px 6px 5px rgba(236, 0, 251, 0.6);
         border-radius: 40px 0 0 40px;
 
         .avatar {
