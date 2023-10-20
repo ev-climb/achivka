@@ -7,8 +7,8 @@
 
 <script setup>
   import { ref, provide, inject, computed } from 'vue';
-  import ProgressBar from '../ProgressBar.vue';
-  import TodoListSection from '../TodoListSection.vue';
+  import ProgressBar from '../components/ProgressBar.vue';
+  import TodoListSection from '../components/TodoListSection.vue';
 
   const todoList = inject('todoList');
   const levels = inject('levels');
