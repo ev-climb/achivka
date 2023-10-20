@@ -1,25 +1,67 @@
 <template>
   <main>
-    <h2>Я только что...</h2>
-    <ul class="listBlock">
-      <li v-for="(todo, index) in todoList" :key="index">{{ todo.text }}</li>
-    </ul>
-    <ProgressBar />
+    <TodoListSection :onDragStart="onDragStart" />
+    <ProgressBar @drop="onDrop($event)" @dragover.prevent @dragenter.prevent />
   </main>
 </template>
 
 <script setup>
+  import { ref, provide, inject, computed } from 'vue';
   import ProgressBar from '../ProgressBar.vue';
-  import { ref } from 'vue';
-  const todoList = ref([
-    { text: 'Сделала домашние задания', scores: 10 },
-    { text: 'Посмотрела мультфильмы', scores: -5 },
-    { text: 'Сама заправила постель', scores: 5 },
-    { text: 'Поиграла на планшете', scores: -5 },
-    { text: 'Почистила зубы', scores: 5 },
-    { text: 'Сделала зарядку', scores: 10 },
-    { text: 'Сделала уборку в комнате', scores: 10 },
-  ]);
+  import TodoListSection from '../TodoListSection.vue';
+
+  const todoList = inject('todoList');
+  const levels = inject('levels');
+
+  const scoreCounter = ref(0);
+
+  const currentLevel = computed(() => {
+    let currentLevel;
+    if (scoreCounter.value < 0) {
+      currentLevel = levels.value[0];
+    } else {
+      for (let i = levels.value.length - 1; i >= 0; i--) {
+        if (scoreCounter.value >= levels.value[i].score) {
+          currentLevel = levels.value[i];
+          break;
+        }
+      }
+    }
+
+    return currentLevel;
+  });
+
+  const nextLevelScores = computed(() => {
+    const nextLevel = currentLevel.value.level;
+    return levels.value[nextLevel].score;
+  });
+
+  const progress = computed(() => {
+    if (scoreCounter.value < 0) {
+      return 0;
+    } else {
+      return Math.round((100 / nextLevelScores.value) * scoreCounter.value);
+    }
+  });
+  provide('progress', progress);
+
+  //логика перетаскивания элементов
+  function onDragStart(event, item) {
+    event.dataTransfer.dropEffect = 'move';
+    event.dataTransfer.effectAllowed = 'move';
+    event.dataTransfer.setData('itemId', item.id.toString());
+  }
+  function onDrop(event) {
+    const itemId = parseInt(event.dataTransfer.getData('itemId'));
+    const todo = todoList.value.filter((todo) => todo.id === itemId);
+    todoList.value = todoList.value.filter((todo) => todo.id != itemId);
+    scoreCounter.value = scoreCounter.value + todo[0].scores;
+    if (progress.value >= 100) {
+      scoreCounter.value = 0;
+    }
+    console.log(scoreCounter.value, 'scoreCounter.value');
+    console.log(nextLevelScores.value, 'nextLevelScores');
+  }
 </script>
 
 <style lang="scss" scoped>
