@@ -1,4 +1,5 @@
 <template>
+  <AuthorizationScreen v-if="authorizationScreenOpen" />
   <HeaderSection />
   <MainPage />
   <FooterSection />
@@ -6,9 +7,12 @@
 
 <script setup>
   import { ref, provide } from 'vue';
+  import AuthorizationScreen from './components/AuthorizationScreen.vue';
   import HeaderSection from './components/HeaderSection.vue';
-  import MainPage from './components/pages/MainPage.vue';
+  import MainPage from './pages/MainPage.vue';
   import FooterSection from './components/FooterSection.vue';
+
+  const authorizationScreenOpen = ref(false);
 
   //Тестовые данные
   const todoList = ref([
@@ -33,6 +37,7 @@
     { level: 10, name: 'Легенда', score: 14000 },
   ]);
 
+  provide('authorizationScreenOpen', authorizationScreenOpen);
   provide('todoList', todoList);
   provide('levels', levels);
 </script>
