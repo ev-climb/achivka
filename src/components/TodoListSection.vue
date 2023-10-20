@@ -1,7 +1,9 @@
 <template>
   <h2>Я только что...</h2>
   <ul class="listBlock">
+    <p v-if="todoList.length === 0">На сегодня всё! Давай продолжим завтра:)</p>
     <li
+      v-else
       v-for="(todo, index) in todoList"
       :key="index"
       draggable="true"
@@ -12,8 +14,11 @@
 </template>
 
 <script setup>
+  import { inject } from 'vue';
+
+  const todoList = inject('todoList');
+
   const props = defineProps({
-    todoList: Array,
     onDragStart: Function,
   });
 </script>
@@ -34,10 +39,16 @@
     background-color: #e906f526;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 20px;
     overflow: auto;
     &::-webkit-scrollbar {
       display: none;
+    }
+    p {
+      font-size: 30px;
+      text-align: center;
+      color: rgb(93, 85, 85);
     }
     li {
       padding: 5px 20px;
@@ -49,6 +60,7 @@
       background: rgba(255, 255, 255, 0.575);
       border-radius: 10px;
       cursor: pointer;
+      color: #722876;
       transition: transform 0.4s, background 0.4s;
       &:hover {
         transform: scale(1.03);
