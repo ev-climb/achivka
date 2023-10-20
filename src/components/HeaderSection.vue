@@ -2,7 +2,7 @@
   <header>
     <img class="logo" src="../assets/images/icons/logo.png" alt="logo" />
     <div>
-      <div class="cabinet">
+      <div class="cabinet" @click="authorizationScreenOpen = true">
         <img src="../assets/images/icons/lock.svg" alt="lock" />
         Кабинет родителей
       </div>
@@ -15,7 +15,11 @@
   </header>
 </template>
 
-<script setup></script>
+<script setup>
+  import { inject } from 'vue';
+
+  const authorizationScreenOpen = inject('authorizationScreenOpen');
+</script>
 
 <style lang="scss" scoped>
   header {
@@ -40,6 +44,7 @@
         gap: 10px;
         font-weight: 500;
         font-size: 20px;
+        cursor: pointer;
         img {
           height: 40px;
           object-fit: cover;
