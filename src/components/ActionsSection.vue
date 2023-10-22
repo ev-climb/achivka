@@ -1,14 +1,14 @@
 <template>
   <h2>Я только что...</h2>
   <ul class="listBlock">
-    <p v-if="todoList.length === 0">На сегодня всё! Давай продолжим завтра:)</p>
+    <p v-if="actions.length === 0">На сегодня всё! Давай продолжим завтра:)</p>
     <li
       v-else
-      v-for="(todo, index) in todoList"
+      v-for="(action, index) in actions"
       :key="index"
       draggable="true"
-      @dragstart="onDragStart($event, todo)">
-      {{ todo.text }}
+      @dragstart="onDragStart($event, action)">
+      {{ action.text }}
     </li>
   </ul>
 </template>
@@ -16,7 +16,7 @@
 <script setup>
   import { inject } from 'vue';
 
-  const todoList = inject('todoList');
+  const actions = inject('actions');
 
   const props = defineProps({
     onDragStart: Function,
