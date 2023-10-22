@@ -6,24 +6,25 @@
 </template>
 
 <script setup>
-  import { ref, provide } from 'vue';
+  import { ref, provide, watch } from 'vue';
   import AuthorizationScreen from './components/AuthorizationScreen.vue';
   import HeaderSection from './components/HeaderSection.vue';
   import MainPage from './pages/MainPage.vue';
   import FooterSection from './components/FooterSection.vue';
 
+  import { useFirestore } from 'vuefire';
+  import { useCollection } from 'vuefire';
+  import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
+
+  const db = useFirestore();
+  const actions = useCollection(collection(db, 'actions'));
+
+  console.log(actions, 'actions.value');
+
   const authorizationScreenOpen = ref(false);
 
   //Тестовые данные
-  const todoList = ref([
-    { id: 1, text: 'Сделала домашние задания', scores: 10, done: true },
-    { id: 2, text: 'Сама заправила постель', scores: 5, done: true },
-    { id: 3, text: 'Посмотрела мультфильмы', scores: -5, done: true },
-    { id: 4, text: 'Поиграла на планшете', scores: -5, done: true },
-    { id: 5, text: 'Почистила зубы', scores: 5, done: true },
-    { id: 6, text: 'Сделала зарядку', scores: 10, done: true },
-    { id: 7, text: 'Сделала уборку в комнате', scores: 10, done: true },
-  ]);
+
   const levels = ref([
     { level: 1, name: 'Новичок', score: 0 },
     { level: 2, name: 'Исследователь', score: 1000 },
@@ -37,9 +38,36 @@
     { level: 10, name: 'Легенда', score: 14000 },
   ]);
 
+  const visibleActions = ref([]);
+  async function getVisibleActions() {
+    if (actions.value.length > 0) {
+      visibleActions.value = actions.value;
+    }
+  }
+  async function addAction(action) {
+    try {
+      await addDoc(collection(db, 'actions'), action);
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+  }
+  async function deleteAction(id) {
+    console.log(id, 'id');
+    try {
+      await deleteDoc(doc(db, 'actions', id));
+    } catch (error) {
+      console.error('Error removing document: ', error);
+    }
+  }
+  watch(actions, async () => {
+    getVisibleActions();
+  });
+
   provide('authorizationScreenOpen', authorizationScreenOpen);
-  provide('todoList', todoList);
+  provide('actions', actions);
   provide('levels', levels);
+  provide('addAction', addAction);
+  provide('deleteAction', deleteAction);
 </script>
 
 <style scoped></style>
