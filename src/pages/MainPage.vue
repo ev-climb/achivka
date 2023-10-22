@@ -1,6 +1,6 @@
 <template>
   <main>
-    <TodoListSection :onDragStart="onDragStart" />
+    <ActionsSection :onDragStart="onDragStart" />
     <ProgressBar @drop="onDrop($event)" @dragover.prevent @dragenter.prevent />
   </main>
 </template>
@@ -8,10 +8,11 @@
 <script setup>
   import { ref, provide, inject, computed } from 'vue';
   import ProgressBar from '../components/ProgressBar.vue';
-  import TodoListSection from '../components/TodoListSection.vue';
+  import ActionsSection from '../components/ActionsSection.vue';
 
-  const todoList = inject('todoList');
+  const actions = inject('actions');
   const levels = inject('levels');
+  const deleteAction = inject('deleteAction');
 
   const scoreCounter = ref(0);
 
@@ -52,15 +53,16 @@
     event.dataTransfer.setData('itemId', item.id.toString());
   }
   function onDrop(event) {
-    const itemId = parseInt(event.dataTransfer.getData('itemId'));
-    const todo = todoList.value.filter((todo) => todo.id === itemId);
-    todoList.value = todoList.value.filter((todo) => todo.id != itemId);
-    scoreCounter.value = scoreCounter.value + todo[0].scores;
+    const itemId = event.dataTransfer.getData('itemId');
+    const action = actions.value.filter((action) => action.id === itemId);
+    actions.value = actions.value.filter((action) => action.id != itemId);
+    scoreCounter.value = scoreCounter.value + action[0].scores;
+    deleteAction(action[0].id);
     if (progress.value >= 100) {
       scoreCounter.value = 0;
     }
     console.log(scoreCounter.value, 'scoreCounter.value');
-    console.log(nextLevelScores.value, 'nextLevelScores');
+    console.log(actions.value, 'actions.value');
   }
 </script>
 
