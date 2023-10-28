@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>Parrents Page</div>
 </template>
 
 <script setup></script>

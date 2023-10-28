@@ -1,7 +1,7 @@
 <template>
   <AuthorizationScreen v-if="authorizationScreenOpen" />
   <HeaderSection />
-  <MainPage />
+  <router-view />
   <FooterSection />
 </template>
 

@@ -26,7 +26,7 @@
 
 <style lang="scss" scoped>
   .progressBarBlock {
-    margin-top: 170px;
+    margin-top: 10vh;
     width: 100%;
     position: relative;
     display: flex;
