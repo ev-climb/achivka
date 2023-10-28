@@ -1,11 +1,15 @@
 <template>
   <header>
-    <img class="logo" src="../assets/images/icons/logo.png" alt="logo" />
+    <router-link to="/">
+      <img class="logo" src="../assets/images/icons/logo.png" alt="logo" />
+    </router-link>
     <div>
-      <div class="cabinet" @click="authorizationScreenOpen = true">
-        <img src="../assets/images/icons/lock.svg" alt="lock" />
-        Кабинет родителей
-      </div>
+      <router-link to="/parrents">
+        <div class="cabinet">
+          <img src="../assets/images/icons/lock.svg" alt="lock" />
+          Кабинет родителей
+        </div>
+      </router-link>
       <div class="avatar-block">
         <img class="avatar" src="../assets/images/icons/avatar-girl.svg" alt="avatar" />
         Василиса
