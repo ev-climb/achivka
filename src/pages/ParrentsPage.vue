@@ -1,7 +1,42 @@
 <template>
-  <div>Parrents Page</div>
+  <section class="actions-settings">
+    <h2>Настройки активностей</h2>
+    <div class="line"></div>
+    <img class="add-action" src="../assets/images/icons/plus.svg" alt="add new action" />
+    <ActionsForParrents />
+  </section>
 </template>
 
-<script setup></script>
+<script setup>
+  import ActionsForParrents from '../components/ActionsForParrents.vue';
+</script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .actions-settings {
+    margin-top: 5vh;
+    padding: 5%;
+    width: 100%;
+    background: #15ccae;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+      color: #f0f8ff;
+      font-size: 2rem;
+    }
+    .line {
+      margin-top: 2%;
+      width: 90%;
+      border-bottom: 3px solid aliceblue;
+    }
+    .add-action {
+      margin-top: 2%;
+      transition: 0.3s;
+      cursor: pointer;
+      &:hover {
+        opacity: 70%;
+      }
+    }
+  }
+</style>
