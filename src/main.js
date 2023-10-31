@@ -1,32 +1,36 @@
 import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router';
 import App from './App.vue';
+import MainPage from './pages/MainPage.vue';
+import ParrentsPage from './pages/ParrentsPage.vue';
+
 import './style.css';
 
-import { VueFire, VueFireAuth } from 'vuefire';
-import { firebaseApp } from './config/firebase';
+//router
+import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
-  history: createWebHistory(),
   routes: [
     {
       path: '/',
-      name: 'Main',
-      component: () => import('./pages/MainPage.vue'),
+      name: 'main',
+      component: MainPage,
     },
     {
       path: '/parrents',
-      name: 'Parrents',
-      component: import('./pages/ParrentsPage.vue'),
+      name: 'parrents',
+      component: ParrentsPage,
     },
   ],
+  history: createWebHistory(),
 });
 
-const app = createApp(App)
-  .use(VueFire, {
-    firebaseApp,
-    modules: [VueFireAuth()],
-  })
-  .use(router);
+//firebase
+import { VueFire, VueFireAuth } from 'vuefire';
+import { firebaseApp } from './config/firebase';
 
+const app = createApp(App);
+app.use(router).use(VueFire, {
+  firebaseApp,
+  modules: [VueFireAuth()],
+});
 app.mount('#app');

@@ -1,8 +1,10 @@
 <template>
-  <AuthorizationScreen v-if="authorizationScreenOpen" />
-  <HeaderSection />
-  <router-view />
-  <FooterSection />
+  <router-view>
+    <AuthorizationScreen v-if="authorizationScreenOpen" />
+    <HeaderSection />
+    <MainPage />
+    <FooterSection />
+  </router-view>
 </template>
 
 <script setup>

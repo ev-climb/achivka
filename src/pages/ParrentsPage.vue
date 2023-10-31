@@ -1,10 +1,5 @@
 <template>
-  <section class="actions-settings">
-    <h2>Настройки активностей</h2>
-    <div class="line"></div>
-    <img class="add-action" src="../assets/images/icons/plus.svg" alt="add new action" />
-    <ActionsForParrents />
-  </section>
+  <div>Parrents Page</div>
 </template>
 
 <script setup>
