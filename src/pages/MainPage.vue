@@ -68,9 +68,13 @@
 
 <style lang="scss" scoped>
   main {
+    margin-top: 50px;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: #efc2f82d;
+    border-radius: 30px;
+    padding: 50px 20px;
   }
 </style>
