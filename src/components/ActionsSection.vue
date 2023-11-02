@@ -39,7 +39,7 @@
     background-color: #e906f526;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     gap: 20px;
     overflow: auto;
     &::-webkit-scrollbar {
