@@ -1,17 +1,14 @@
 <template>
-  <router-view>
-    <AuthorizationScreen v-if="authorizationScreenOpen" />
-    <HeaderSection />
-    <MainPage />
-    <FooterSection />
-  </router-view>
+  <AuthorizationScreen v-if="authorizationScreenOpen" />
+  <HeaderSection />
+  <router-view />
+  <FooterSection />
 </template>
 
 <script setup>
   import { ref, provide, watch } from 'vue';
   import AuthorizationScreen from './components/AuthorizationScreen.vue';
   import HeaderSection from './components/HeaderSection.vue';
-  import MainPage from './pages/MainPage.vue';
   import FooterSection from './components/FooterSection.vue';
 
   import { useFirestore } from 'vuefire';

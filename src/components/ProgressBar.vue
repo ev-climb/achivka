@@ -11,10 +11,10 @@
 </template>
 
 <script setup>
-  import { computed, ref } from 'vue';
+  import { computed, inject } from 'vue';
 
   //Шкала прогресса
-  const progress = ref(1);
+  const progress = inject('progress');
   const visibleProgress = computed(() => {
     if (progress.value < 3) {
       return `width:3%`;
@@ -53,13 +53,15 @@
         font-size: 60px;
         font-weight: 700;
         color: white;
+        z-index: 1;
       }
       .progressFill {
         position: absolute;
         left: 0;
         height: 100%;
+        max-width: 98%;
         background: #e906f597;
-        box-shadow: 7px 0px 8px 0px rgba(236, 0, 251, 0.2);
+        box-shadow: 0px 0px 6px 5px rgba(236, 0, 251, 0.6);
         border-radius: 40px 0 0 40px;
 
         .avatar {

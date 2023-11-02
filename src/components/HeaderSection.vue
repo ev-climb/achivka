@@ -4,7 +4,7 @@
       <img class="logo" src="../assets/images/icons/logo.png" alt="logo" />
     </router-link>
     <div>
-      <router-link :to="{ name: 'parrents' }">
+      <router-link to="/parrents">
         <div class="cabinet">
           <img src="../assets/images/icons/lock.svg" alt="lock" />
           Кабинет родителей
