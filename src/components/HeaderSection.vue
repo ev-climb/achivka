@@ -19,11 +19,7 @@
   </header>
 </template>
 
-<script setup>
-  import { inject } from 'vue';
-
-  const authorizationScreenOpen = inject('authorizationScreenOpen');
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
   header {
