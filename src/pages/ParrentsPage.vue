@@ -19,7 +19,12 @@
   import ActionsForParrents from '../components/ActionsForParrents.vue';
 
   const isActionCreationOpen = ref(false);
+  const isActionEditing = ref(false);
+  const currentAction = ref({});
+
   provide('isActionCreationOpen', isActionCreationOpen);
+  provide('isActionEditing', isActionEditing);
+  provide('currentAction', currentAction);
 </script>
 
 <style lang="scss" scoped>

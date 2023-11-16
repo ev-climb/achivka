@@ -5,10 +5,13 @@
       {{ action.text }}
       <div class="icons">
         <img
-          @click="isActionCreationOpen = true"
+          @click="openActionEdit(action)"
           src="../assets/images/icons/edit.svg"
           alt="редактировать" />
-        <img src="../assets/images/icons/remove.svg" alt="удалить" />
+        <img
+          @click="deleteAction(action.id)"
+          src="../assets/images/icons/remove.svg"
+          alt="удалить" />
       </div>
     </li>
   </ul>
@@ -19,6 +22,15 @@
 
   const actions = inject('actions');
   const isActionCreationOpen = inject('isActionCreationOpen');
+  const currentAction = inject('currentAction');
+  const isActionEditing = inject('isActionEditing');
+  const deleteAction = inject('deleteAction');
+
+  function openActionEdit(action) {
+    isActionCreationOpen.value = true;
+    currentAction.value = action;
+    isActionEditing.value = true;
+  }
 </script>
 
 <style lang="scss" scoped>

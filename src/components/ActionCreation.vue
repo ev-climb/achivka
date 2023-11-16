@@ -1,5 +1,5 @@
 <template>
-  <div @click="isActionCreationOpen = false" class="background">
+  <div @click="closeActionCreation()" class="background">
     <form @click.stop>
       <div class="header">
         <h2>Создание новой активности</h2>
@@ -24,7 +24,7 @@
           :class="!isNewActionValid ? 'disabled' : ''">
           Сохранить
         </button>
-        <button @click.prevent="isActionCreationOpen = false">Отменить</button>
+        <button @click.prevent="closeActionCreation()">Отменить</button>
       </div>
     </form>
   </div>
@@ -38,20 +38,30 @@
   });
   const addAction = inject('addAction');
   const isActionCreationOpen = inject('isActionCreationOpen');
+  const currentAction = inject('currentAction');
+  const isActionEditing = inject('isActionEditing');
 
   const isNewActionValid = computed(() => {
     return newAction.value.text.length > 0 ? true : false;
   });
+  console.log(isActionEditing);
+  if (isActionEditing.value === true) {
+    newAction.value = currentAction.value;
+  }
 
   function saveNewAction(action) {
-    console.log(isNewActionValid.value);
-    console.log(newAction.value);
     if (isNewActionValid.value) {
       addAction(action);
       isActionCreationOpen.value = false;
+      isActionEditing.value = false;
     } else {
       console.log('форма не валидна');
     }
+  }
+
+  function closeActionCreation() {
+    isActionCreationOpen.value = false;
+    isActionEditing.value = false;
   }
 </script>
 
