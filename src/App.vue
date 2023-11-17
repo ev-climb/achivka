@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-  import { ref, provide, watch } from 'vue';
+  import { ref, provide, watch, computed } from 'vue';
   import AuthorizationScreen from './components/AuthorizationScreen.vue';
   import HeaderSection from './components/HeaderSection.vue';
   import FooterSection from './components/FooterSection.vue';
@@ -15,9 +15,11 @@
   import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
 
   const db = useFirestore();
-  const actions = useCollection(collection(db, 'actions'));
+  const actions = useCollection(collection(db, 'daily'));
+  const allActions = useCollection(collection(db, 'actions'));
 
   console.log(actions, 'actions.value');
+  console.log(allActions.value, 'allActions.value');
 
   const authorizationScreenOpen = ref(false);
 
@@ -36,15 +38,22 @@
     { level: 10, name: 'Легенда', score: 14000 },
   ]);
 
-  const visibleActions = ref([]);
-  async function getVisibleActions() {
-    if (actions.value.length > 0) {
-      visibleActions.value = actions.value;
+
+  const isTheFirstEntry = computed(() => {
+    const date = new Date().toLocaleDateString();
+    console.log(date);
+    if ( localStorage.achivka_date == date ) {
+      return false;
+    } else {
+      localStorage.achivka_date = date;
+      return true;
     }
-  }
+  })
+
   async function addAction(action) {
     try {
       await addDoc(collection(db, 'actions'), action);
+      await addDoc(collection(db, 'daily'), action);
     } catch (error) {
       console.error('Error adding document: ', error);
     }
@@ -52,16 +61,25 @@
   async function deleteAction(id) {
     try {
       await deleteDoc(doc(db, 'actions', id));
+      await deleteDoc(doc(db, 'daily', id));
     } catch (error) {
       console.error('Error removing document: ', error);
     }
   }
-  watch(actions, async () => {
-    getVisibleActions();
-  });
+
+  if (isTheFirstEntry) {
+    allActions.value.map((action)=>{
+      try {
+        addDoc(collection(db, 'daily'), action);
+      } catch (error) {
+        console.error('Error adding document: ', error);
+      }
+    })
+  }
 
   provide('authorizationScreenOpen', authorizationScreenOpen);
   provide('actions', actions);
+  provide('allActions', allActions);
   provide('levels', levels);
   provide('addAction', addAction);
   provide('deleteAction', deleteAction);

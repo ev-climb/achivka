@@ -20,7 +20,7 @@
 <script setup>
   import { inject } from 'vue';
 
-  const actions = inject('actions');
+  const actions = inject('allActions');
   const isActionCreationOpen = inject('isActionCreationOpen');
   const currentAction = inject('currentAction');
   const isActionEditing = inject('isActionEditing');
