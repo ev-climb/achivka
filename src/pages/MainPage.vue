@@ -82,7 +82,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: #efc2f82d;
+    background: #efc2f860;
     border-radius: 30px;
     padding: 50px 20px;
   }

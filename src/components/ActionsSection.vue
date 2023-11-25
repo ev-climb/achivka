@@ -5,8 +5,9 @@
     <li
       v-else
       v-for="(action, index) in actions"
-      :key="index"
       draggable="true"
+      :key="index"
+      :style="action.scores > 0 && 'background: #1fca52a8;'"
       @dragstart="onDragStart($event, action)">
       {{ action.text }}
     </li>
@@ -57,14 +58,13 @@
       justify-content: center;
       font-size: 30px;
       width: 100%;
-      background: rgba(255, 255, 255, 0.575);
+      background: rgba(204, 83, 83, 0.219);
       border-radius: 10px;
       cursor: pointer;
-      color: #722876;
-      transition: transform 0.4s, background 0.4s;
+      color: #fafafa;
+      transition: transform 0.4s;
       &:hover {
         transform: scale(1.03);
-        background: rgba(255, 255, 255, 0.8);
       }
     }
   }

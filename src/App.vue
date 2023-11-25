@@ -59,7 +59,14 @@
   }
 
   async function getDailyActions() {
-    if (isTheFirstEntry.value) {
+    if (!isTheFirstEntry.value) {
+      actions.value.map((action, index)=>{
+        try {
+          deleteDoc(doc(db, 'daily', actions.value[index].id));
+        } catch (error) {
+          console.error('Error removing an action: ', error);
+        }
+      })
       allActions.value.map((action)=>{
         try {
           addDoc(collection(db, 'daily'), action);
