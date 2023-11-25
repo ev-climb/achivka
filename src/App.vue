@@ -1,13 +1,11 @@
 <template>
-  <AuthorizationScreen v-if="authorizationScreenOpen" />
   <HeaderSection />
   <router-view />
   <FooterSection />
 </template>
 
 <script setup>
-  import { ref, provide, watch, computed } from 'vue';
-  import AuthorizationScreen from './components/AuthorizationScreen.vue';
+  import { ref, provide, computed } from 'vue';
   import HeaderSection from './components/HeaderSection.vue';
   import FooterSection from './components/FooterSection.vue';
 
@@ -15,47 +13,40 @@
   import { collection, addDoc, deleteDoc, doc } from 'firebase/firestore';
 
   const db = useFirestore();
+  const levels = useCollection(collection(db, 'levels'));
   const actions = useCollection(collection(db, 'daily'));
   const allActions = useCollection(collection(db, 'actions'));
-
-  console.log(actions, 'actions.value');
-  console.log(allActions.value, 'allActions.value');
-
-  const authorizationScreenOpen = ref(false);
-
-  //Тестовые данные
-
-  const levels = ref([
-    { level: 1, name: 'Новичок', score: 0 },
-    { level: 2, name: 'Исследователь', score: 1000 },
-    { level: 3, name: 'Путешественник', score: 1400 },
-    { level: 4, name: 'Исскатель приключений', score: 1200 },
-    { level: 5, name: 'Знаток', score: 2700 },
-    { level: 6, name: 'Эксперт', score: 3800 },
-    { level: 7, name: 'Мастер', score: 5300 },
-    { level: 8, name: 'Чемпион', score: 7500 },
-    { level: 9, name: 'Гуру', score: 10500 },
-    { level: 10, name: 'Легенда', score: 14000 },
-  ]);
-
+  const scoreCounter = useCollection(collection(db, 'scoreCounter'));
 
   const isTheFirstEntry = computed(() => {
     const date = new Date().toLocaleDateString();
-    console.log(date);
-    if ( localStorage.achivka_date == date ) {
-      return false;
-    } else {
-      localStorage.achivka_date = date;
+    if ( localStorage.achivka_date != date ) {
       return true;
+    } else {
+      return false;
     }
   })
+
+  getDailyActions()
+
+  async function addScores(scores) {
+    let newScoresValue = {
+        scoreCounter: Number(scores)
+    }
+    try {
+      await deleteDoc(doc(db, 'scoreCounter', scoreCounter.value[0].id));
+      await addDoc(collection(db, 'scoreCounter'), newScoresValue);
+    } catch (error) {
+      console.error('Error adding an action: ', error)
+    }
+  }
 
   async function addAction(action) {
     try {
       await addDoc(collection(db, 'actions'), action);
       await addDoc(collection(db, 'daily'), action);
     } catch (error) {
-      console.error('Error adding document: ', error);
+      console.error('Error adding an action: ', error);
     }
   }
   async function deleteAction(id) {
@@ -63,26 +54,31 @@
       await deleteDoc(doc(db, 'actions', id));
       await deleteDoc(doc(db, 'daily', id));
     } catch (error) {
-      console.error('Error removing document: ', error);
+      console.error('Error removing an action: ', error);
     }
   }
 
-  if (isTheFirstEntry) {
-    allActions.value.map((action)=>{
-      try {
-        addDoc(collection(db, 'daily'), action);
-      } catch (error) {
-        console.error('Error adding document: ', error);
-      }
-    })
+  async function getDailyActions() {
+    if (isTheFirstEntry.value) {
+      allActions.value.map((action)=>{
+        try {
+          addDoc(collection(db, 'daily'), action);
+        } catch (error) {
+          console.error('Error adding document: ', error);
+        }
+      })
+      const date = new Date().toLocaleDateString();
+      localStorage.achivka_date = date;
+    }
   }
 
-  provide('authorizationScreenOpen', authorizationScreenOpen);
   provide('actions', actions);
   provide('allActions', allActions);
   provide('levels', levels);
   provide('addAction', addAction);
   provide('deleteAction', deleteAction);
+  provide('scoreCounter', scoreCounter)
+  provide('addScores', addScores)
 </script>
 
 <style scoped></style>

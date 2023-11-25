@@ -13,28 +13,38 @@
   const actions = inject('actions');
   const levels = inject('levels');
   const deleteAction = inject('deleteAction');
+  const counter = inject('scoreCounter');
+  const addScores = inject('addScores')
 
-  const scoreCounter = ref(0);
+  const scoreCounter = computed(()=> {
+    if (counter.value.length > 0) {
+      return counter.value[0].scoreCounter
+    }
+    return 0
+  })
 
   const currentLevel = computed(() => {
-    let currentLevel;
+    let level;
     if (scoreCounter.value < 0) {
-      currentLevel = levels.value[0];
+      level = levels.value[0];
     } else {
-      for (let i = levels.value.length - 1; i >= 0; i--) {
+      for (let i = 0; i < levels.value.length; i++) {    
         if (scoreCounter.value >= levels.value[i].score) {
-          currentLevel = levels.value[i];
+          level = levels.value[i];
           break;
         }
       }
     }
-
-    return currentLevel;
+    return level;
   });
 
   const nextLevelScores = computed(() => {
-    const nextLevel = currentLevel.value.level;
-    return levels.value[nextLevel].score;
+    if (currentLevel.value) {
+      const nextLevel = currentLevel.value.level;
+      return levels.value[nextLevel].score;
+    } else {
+      return 999999
+    }
   });
 
   const progress = computed(() => {
@@ -56,13 +66,12 @@
     const itemId = event.dataTransfer.getData('itemId');
     const action = actions.value.filter((action) => action.id === itemId);
     actions.value = actions.value.filter((action) => action.id != itemId);
-    scoreCounter.value = scoreCounter.value + action[0].scores;
+    const newScoreCounterValue = Number(scoreCounter.value) + Number(action[0].scores);
+    addScores(newScoreCounterValue)
     deleteAction(action[0].id);
     if (progress.value >= 100) {
-      scoreCounter.value = 0;
+      addScores(0)
     }
-    console.log(scoreCounter.value, 'scoreCounter.value');
-    console.log(actions.value, 'actions.value');
   }
 </script>
 
