@@ -1,20 +1,29 @@
 <template>
   <main>
-    <ActionsSection :onDragStart="onDragStart" />
-    <ProgressBar @drop="onDrop($event)" @dragover.prevent @dragenter.prevent />
+    <section class="main">
+      <ActionsSection :onDragStart="onDragStart" />
+      <ProgressBar @drop="onDrop($event)" @dragover.prevent @dragenter.prevent />
+    </section>
+    <section class="history">
+      <ActionsPerDay/>
+      <ActionsStatistics/>
+    </section>
   </main>
 </template>
 
 <script setup>
-  import { ref, provide, inject, computed } from 'vue';
+  import { provide, inject, computed } from 'vue';
   import ProgressBar from '../components/ProgressBar.vue';
   import ActionsSection from '../components/ActionsSection.vue';
+  import ActionsPerDay from '../components/ActionsPerDay.vue'
+  import ActionsStatistics from '../components/ActionsStatistics.vue'
 
   const actions = inject('actions');
   const levels = inject('levels');
   const deleteAction = inject('deleteAction');
   const counter = inject('scoreCounter');
   const addScores = inject('addScores')
+const addCompletedAction = inject('addCompletedAction');
 
   const scoreCounter = computed(()=> {
     if (counter.value.length > 0) {
@@ -68,6 +77,7 @@
     actions.value = actions.value.filter((action) => action.id != itemId);
     const newScoreCounterValue = Number(scoreCounter.value) + Number(action[0].scores);
     addScores(newScoreCounterValue)
+    addCompletedAction(action[0])
     deleteAction(action[0].id);
     if (progress.value >= 100) {
       addScores(0)
@@ -76,7 +86,7 @@
 </script>
 
 <style lang="scss" scoped>
-  main {
+  .main {
     margin-top: 50px;
     width: 100%;
     display: flex;
@@ -85,5 +95,11 @@
     background: #efc2f860;
     border-radius: 30px;
     padding: 50px 20px;
+  }
+  .history {
+    margin-top: 4%;
+    width: 100%;
+    display: flex;
+    gap: 4%;
   }
 </style>

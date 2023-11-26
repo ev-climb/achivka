@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-  import { ref, provide, computed } from 'vue';
+  import { provide, computed } from 'vue';
   import HeaderSection from './components/HeaderSection.vue';
   import FooterSection from './components/FooterSection.vue';
 
@@ -15,6 +15,7 @@
   const db = useFirestore();
   const levels = useCollection(collection(db, 'levels'));
   const actions = useCollection(collection(db, 'daily'));
+  const completedActions = useCollection(collection(db, 'completed'));
   const allActions = useCollection(collection(db, 'actions'));
   const scoreCounter = useCollection(collection(db, 'scoreCounter'));
 
@@ -79,6 +80,10 @@
     }
   }
 
+  async function addCompletedAction(action) {
+    await addDoc(collection(db, 'completed'), action);
+  }
+
   provide('actions', actions);
   provide('allActions', allActions);
   provide('levels', levels);
@@ -86,6 +91,9 @@
   provide('deleteAction', deleteAction);
   provide('scoreCounter', scoreCounter)
   provide('addScores', addScores)
+  provide('addCompletedAction', addCompletedAction)
+  provide('completedActions', completedActions)
+
 </script>
 
 <style scoped></style>
