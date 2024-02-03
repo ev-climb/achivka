@@ -1,7 +1,7 @@
 <template>
   <ul class="listBlock">
-    <p v-if="actions.length === 0">Добавьте первую активность</p>
-    <li v-else v-for="(action, index) in actions" :key="index">
+    <p v-if="allActions.length === 0">Добавьте первую активность</p>
+    <li v-else v-for="(action, index) in allActions" :key="index">
       {{ action.text }}
       <div class="icons">
         <img
@@ -20,7 +20,7 @@
 <script setup>
   import { inject } from 'vue';
 
-  const actions = inject('allActions');
+  const allActions = inject('allActions');
   const isActionCreationOpen = inject('isActionCreationOpen');
   const currentAction = inject('currentAction');
   const isActionEditing = inject('isActionEditing');

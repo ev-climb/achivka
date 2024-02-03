@@ -1,10 +1,10 @@
 <template>
   <h2>Я только что...</h2>
   <ul class="listBlock">
-    <p v-if="actions.length === 0">На сегодня всё! Давай продолжим завтра:)</p>
+    <p v-if="dailyActions.length === 0">На сегодня всё! Давай продолжим завтра:)</p>
     <li
       v-else
-      v-for="(action, index) in actions"
+      v-for="(action, index) in dailyActions"
       draggable="true"
       :key="index"
       :style="action.scores > 0 && 'background: #1fca52a8;'"
@@ -17,7 +17,7 @@
 <script setup>
   import { inject } from 'vue';
 
-  const actions = inject('actions');
+  const dailyActions = inject('dailyActions');
 
   const props = defineProps({
     onDragStart: Function,

@@ -18,7 +18,7 @@
   import ActionsPerDay from '../components/ActionsPerDay.vue'
   import ActionsStatistics from '../components/ActionsStatistics.vue'
 
-  const actions = inject('actions');
+  const dailyActions = inject('dailyActions');
   const levels = inject('levels');
   const deleteAction = inject('deleteAction');
   const counter = inject('scoreCounter');
@@ -73,8 +73,8 @@ const addCompletedAction = inject('addCompletedAction');
   }
   function onDrop(event) {
     const itemId = event.dataTransfer.getData('itemId');
-    const action = actions.value.filter((action) => action.id === itemId);
-    actions.value = actions.value.filter((action) => action.id != itemId);
+    const action = dailyActions.value.filter((action) => action.id === itemId);
+    action.value = dailyActions.value.filter((action) => action.id != itemId);
     const newScoreCounterValue = Number(scoreCounter.value) + Number(action[0].scores);
     addScores(newScoreCounterValue)
     addCompletedAction(action[0])

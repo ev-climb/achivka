@@ -2,7 +2,7 @@
     <div class="main-per-day">
         <h2>Сегодня я...</h2>
         <ul>
-            <li v-for="(action, index) in actions" :key="index">{{action.text}}</li>
+            <li v-for="(action, index) in completedActions" :key="index">{{action.text}}</li>
         </ul>
     </div>
 </template>
@@ -10,7 +10,7 @@
 <script setup>
 import { inject } from 'vue';
 
-const actions = inject('completedActions');
+const completedActions = inject('completedActions');
 
 </script>
 

@@ -14,7 +14,7 @@
 
   const db = useFirestore();
   const levels = useCollection(collection(db, 'levels'));
-  const actions = useCollection(collection(db, 'daily'));
+  const dailyActions = useCollection(collection(db, 'daily'));
   const completedActions = useCollection(collection(db, 'completed'));
   const allActions = useCollection(collection(db, 'actions'));
   const scoreCounter = useCollection(collection(db, 'scoreCounter'));
@@ -22,6 +22,7 @@
   const isTheFirstEntry = computed(() => {
     const date = new Date().toLocaleDateString();
     if ( localStorage.achivka_date != date ) {
+      localStorage.achivka_date = date;
       return true;
     } else {
       return false;
@@ -29,6 +30,7 @@
   })
 
   getDailyActions()
+  clearDailyCompletedActions()
 
   async function addScores(scores) {
     let newScoresValue = {
@@ -60,10 +62,11 @@
   }
 
   async function getDailyActions() {
-    if (!isTheFirstEntry.value) {
-      actions.value.map((action, index)=>{
+    if (isTheFirstEntry.value) {
+      dailyActions.value.map((action, index)=>{
         try {
-          deleteDoc(doc(db, 'daily', actions.value[index].id));
+          deleteDoc(doc(db, 'daily', dailyActions.value[index].id));
+          console.log('dailyActions was cleared');
         } catch (error) {
           console.error('Error removing an action: ', error);
         }
@@ -71,8 +74,24 @@
       allActions.value.map((action)=>{
         try {
           addDoc(collection(db, 'daily'), action);
+          console.log('dailyActions has been updated');
         } catch (error) {
-          console.error('Error adding document: ', error);
+          console.error('Error dailyActions updating: ', error);
+        }
+      })
+      const date = new Date().toLocaleDateString();
+      localStorage.achivka_date = date;
+    }
+  }
+
+  async function clearDailyCompletedActions() {
+    if (isTheFirstEntry.value) {
+      completedActions.value.map((action, index)=>{
+        try {
+          deleteDoc(doc(db, 'completed', completedActions.value[index].id));
+          console.log('completedActions was cleared');
+        } catch (error) {
+          console.error('Error removing an action: ', error);
         }
       })
       const date = new Date().toLocaleDateString();
@@ -84,7 +103,7 @@
     await addDoc(collection(db, 'completed'), action);
   }
 
-  provide('actions', actions);
+  provide('dailyActions', dailyActions);
   provide('allActions', allActions);
   provide('levels', levels);
   provide('addAction', addAction);
