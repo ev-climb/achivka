@@ -21,16 +21,57 @@
 
   const isTheFirstEntry = computed(() => {
     const date = new Date().toLocaleDateString();
-    if ( localStorage.achivka_date != date ) {
-      localStorage.achivka_date = date;
+    if ( localStorage.achivka_date !== date ) {
+      console.log('1', localStorage.achivka_date);
       return true;
     } else {
+      console.log('2', localStorage.achivka_date);
       return false;
     }
   })
 
-  getDailyActions()
-  clearDailyCompletedActions()
+  updateDailyActions();
+
+  function updateDailyActions() {
+    if (isTheFirstEntry.value) {
+      getDailyActions()
+      clearDailyCompletedActions()
+    }
+  }
+
+  function getDailyActions() {
+    dailyActions.value.map((action, index)=>{
+      try {
+        deleteDoc(doc(db, 'daily', dailyActions.value[index].id));
+        console.log('dailyActions was cleared');
+      } catch (error) {
+        console.error('Error removing an action: ', error);
+      }
+    })
+    allActions.value.map((action)=>{
+      try {
+        addDoc(collection(db, 'daily'), action);
+        console.log('dailyActions has been updated');
+      } catch (error) {
+        console.error('Error dailyActions updating: ', error);
+      }
+    })
+    const date = new Date().toLocaleDateString();
+    localStorage.achivka_date = date;
+  }
+
+  async function clearDailyCompletedActions() {
+    completedActions.value.map((action, index)=>{
+      try {
+        deleteDoc(doc(db, 'completed', completedActions.value[index].id));
+        console.log('completedActions was cleared');
+      } catch (error) {
+        console.error('Error removing an action: ', error);
+      }
+    })
+    const date = new Date().toLocaleDateString();
+    localStorage.achivka_date = date;
+  }
 
   async function addScores(scores) {
     let newScoresValue = {
@@ -58,44 +99,6 @@
       await deleteDoc(doc(db, 'daily', id));
     } catch (error) {
       console.error('Error removing an action: ', error);
-    }
-  }
-
-  async function getDailyActions() {
-    if (isTheFirstEntry.value) {
-      dailyActions.value.map((action, index)=>{
-        try {
-          deleteDoc(doc(db, 'daily', dailyActions.value[index].id));
-          console.log('dailyActions was cleared');
-        } catch (error) {
-          console.error('Error removing an action: ', error);
-        }
-      })
-      allActions.value.map((action)=>{
-        try {
-          addDoc(collection(db, 'daily'), action);
-          console.log('dailyActions has been updated');
-        } catch (error) {
-          console.error('Error dailyActions updating: ', error);
-        }
-      })
-      const date = new Date().toLocaleDateString();
-      localStorage.achivka_date = date;
-    }
-  }
-
-  async function clearDailyCompletedActions() {
-    if (isTheFirstEntry.value) {
-      completedActions.value.map((action, index)=>{
-        try {
-          deleteDoc(doc(db, 'completed', completedActions.value[index].id));
-          console.log('completedActions was cleared');
-        } catch (error) {
-          console.error('Error removing an action: ', error);
-        }
-      })
-      const date = new Date().toLocaleDateString();
-      localStorage.achivka_date = date;
     }
   }
 
