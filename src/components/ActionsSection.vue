@@ -28,6 +28,7 @@
   h2 {
     margin-top: 5%;
     font-size: 45px;
+    color: #535353;
   }
   ul {
     margin-top: 50px;

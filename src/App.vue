@@ -22,10 +22,8 @@
   const isTheFirstEntry = computed(() => {
     const date = new Date().toLocaleDateString();
     if ( localStorage.achivka_date !== date ) {
-      console.log('1', localStorage.achivka_date);
       return true;
     } else {
-      console.log('2', localStorage.achivka_date);
       return false;
     }
   })
