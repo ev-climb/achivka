@@ -13,7 +13,6 @@
 <script setup>
   import { computed, inject } from 'vue';
 
-  //Шкала прогресса
   const progress = inject('progress');
   const visibleProgress = computed(() => {
     if (progress.value < 3) {
@@ -47,14 +46,19 @@
         object-fit: cover;
         position: absolute;
         right: 1%;
-        top: 10%;
+        top: 8%;
+
+        animation: shake 6s infinite;
+        animation-timing-function: ease-in-out;
       }
+
       span {
         font-size: 60px;
         font-weight: 700;
         color: white;
         z-index: 1;
       }
+
       .progressFill {
         position: absolute;
         left: 0;
@@ -74,4 +78,21 @@
       }
     }
   }
+
+  @keyframes shake {
+  0% { transform: scale(1) rotate(0deg); }
+  89% { transform: scale(1) rotate(0deg); }
+  90% { transform: scale(1.04) rotate(6deg); }
+  91% { transform: scale(1.05) rotate(0deg); }
+  92% { transform: scale(1.06) rotate(-6deg); }
+  93% { transform: scale(1.06) rotate(0deg); }
+  94% { transform: scale(1.06) rotate(6deg); }
+  95% { transform: scale(1.05) rotate(0deg); }
+  96% { transform: scale(1.04) rotate(-6deg); }
+  97% { transform: scale(1.03) rotate(0deg); }
+  98% { transform: scale(1.02) rotate(6deg); }
+  99% { transform: scale(1.01) rotate(0); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
 </style>
