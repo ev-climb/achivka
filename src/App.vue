@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-  import { provide, computed } from 'vue';
+  import { provide, ref } from 'vue';
   import HeaderSection from './components/HeaderSection.vue';
   import FooterSection from './components/FooterSection.vue';
 
@@ -19,18 +19,31 @@
   const allActions = useCollection(collection(db, 'actions'));
   const scoreCounter = useCollection(collection(db, 'scoreCounter'));
 
-  const isTheFirstEntry = computed(() => {
-    const date = new Date().toLocaleDateString();
-    if ( localStorage.achivka_date !== date ) {
-      return true;
-    } else {
-      return false;
-    }
-  })
+  const isTheFirstEntry = ref(true);
 
+  updateLocalStorageDate();
   updateDailyActions();
 
+  function checkDate() {
+    const date = new Date().toLocaleDateString();
+    if (localStorage.achivka_date !== date) {
+      isTheFirstEntry.value = true;
+    } else {
+      isTheFirstEntry.value = false;
+    }
+  }
+
+  function updateLocalStorageDate() {
+    checkDate();
+
+    const date = new Date().toLocaleDateString();
+    if ( localStorage.achivka_date !== date ) {
+      localStorage.achivka_date = date;
+    }
+  }
+
   function updateDailyActions() {
+    console.log('isTheFirstEntry', isTheFirstEntry.value);
     if (isTheFirstEntry.value) {
       getDailyActions()
       clearDailyCompletedActions()
@@ -54,8 +67,6 @@
         console.error('Error dailyActions updating: ', error);
       }
     })
-    const date = new Date().toLocaleDateString();
-    localStorage.achivka_date = date;
   }
 
   async function clearDailyCompletedActions() {
@@ -67,8 +78,6 @@
         console.error('Error removing an action: ', error);
       }
     })
-    const date = new Date().toLocaleDateString();
-    localStorage.achivka_date = date;
   }
 
   async function addScores(scores) {
