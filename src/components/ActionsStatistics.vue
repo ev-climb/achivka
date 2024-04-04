@@ -3,14 +3,37 @@
     <h2>Мои ачивки:</h2>
     <div class="achievements">
       <div class="points">
-        <img src="../assets/images/levels/level1.png" alt="level">
+        <img src="../assets/images/levels/level1.png" alt="level" />
       </div>
-      <img src="../assets/images/levels/picForLevel1.jpg" alt="girl">
+      <img src="../assets/images/levels/picForLevel1.jpg" alt="girl" />
     </div>
   </div>
 </template>
 
 <script setup>
+import traveler from "../assets/images/achievments/achiev-traveler.svg";
+import chess from "../assets/images/achievments/achiev-chess.svg";
+import brain from "../assets/images/achievments/achiev-brain.svg";
+const achievements = [
+  {
+    index: 0,
+    urn: traveler,
+    width: 150,
+    rotate: 20,
+  },
+  {
+    index: 0,
+    urn: chess,
+    width: 80,
+    rotate: 10,
+  },
+  {
+    index: 0,
+    urn: brain,
+    width: 170,
+    rotate: -20,
+  },
+];
 </script>
 
 <style lang="scss" scoped>
