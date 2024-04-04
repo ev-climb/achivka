@@ -15,12 +15,16 @@
 
 <script setup>
   import { ref, provide } from 'vue';
+  import { useActionsStore } from '../stores/ActionsStore';
   import ActionCreation from '../components/ActionCreation.vue';
   import ActionsForParrents from '../components/ActionsForParrents.vue';
 
+  const actionsStore = useActionsStore();
   const isActionCreationOpen = ref(false);
   const isActionEditing = ref(false);
   const currentAction = ref({});
+
+  actionsStore.getActions();
 
   provide('isActionCreationOpen', isActionCreationOpen);
   provide('isActionEditing', isActionEditing);

@@ -4,21 +4,24 @@
       <div class="progressFill" :style="visibleProgress">
         <img class="avatar" src="../assets/images/icons/avatar-girl.svg" alt="avatar" />
       </div>
-      <span>{{ progress }}%</span>
+      <span>{{ props.progress }}%</span>
       <img class="treasure" src="../assets/images/icons/treasure.svg" alt="treasure" />
     </div>
   </div>
 </template>
 
 <script setup>
-  import { computed, inject } from 'vue';
+  import { computed } from 'vue';
 
-  const progress = inject('progress');
+  const props = defineProps({
+    progress: Number,
+  })
+
   const visibleProgress = computed(() => {
-    if (progress.value < 3) {
+    if (props.progress < 3) {
       return `width:3%`;
     } else {
-      return `width:${progress.value}%`;
+      return `width:${props.progress}%`;
     }
   });
 </script>

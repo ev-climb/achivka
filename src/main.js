@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
+import { createPinia } from 'pinia'
 import App from './App.vue';
 import './style.css';
 
@@ -27,6 +28,7 @@ const app = createApp(App)
     firebaseApp,
     modules: [VueFireAuth()],
   })
+  .use(createPinia())
   .use(router);
 
 app.mount('#app');

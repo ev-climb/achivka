@@ -2,8 +2,9 @@
   <div class="main-per-day">
     <h2>Сегодня я сделала:</h2>
     <ul>
+      <p v-if="actionsStore.completedActions.length === 0">Пока ничего, давай начнём!:)</p>
       <li
-        v-for="(action, index) in completedActions"
+        v-for="(action, index) in actionsStore.completedActions"
         :key="index"
         :style="action.scores < 0 && 'background-color: rgb(255, 227, 218)'"
       >
@@ -14,9 +15,10 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { useActionsStore } from '../stores/ActionsStore'
 
-const completedActions = inject("completedActions");
+const actionsStore = useActionsStore();
+
 </script>
 
 <style lang="scss" scoped>
@@ -40,10 +42,17 @@ const completedActions = inject("completedActions");
     padding: 20px;
     width: 90%;
     height: 90%;
+    display: grid;
+    grid-auto-rows: max-content;
     background-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0px 0px 10px 0px rgba(189, 104, 184, 0.4) inset;
     border-radius: 20px;
     overflow: auto;
+
+    p {
+      align-self: center;
+      justify-self: center;
+    }
 
     li {
       margin-top: 10px;

@@ -1,7 +1,7 @@
 <template>
   <ul class="listBlock">
-    <p v-if="allActions.length === 0">Добавьте первую активность</p>
-    <li v-else v-for="(action, index) in allActions" :key="index">
+    <p v-if="actionsStore.actions.length === 0">Добавьте первую активность</p>
+    <li v-else v-for="(action, index) in actionsStore.actions" :key="index">
       {{ action.text }}
       <div class="icons">
         <img
@@ -19,17 +19,23 @@
 
 <script setup>
   import { inject } from 'vue';
+  import { useActionsStore } from '../stores/ActionsStore'; 
 
-  const allActions = inject('allActions');
+  const actionsStore = useActionsStore();
+
   const isActionCreationOpen = inject('isActionCreationOpen');
   const currentAction = inject('currentAction');
   const isActionEditing = inject('isActionEditing');
-  const deleteAction = inject('deleteAction');
 
   function openActionEdit(action) {
     isActionCreationOpen.value = true;
     currentAction.value = action;
     isActionEditing.value = true;
+  }
+
+  function deleteAction(id) {
+    actionsStore.deleteAction(id);
+    actionsStore.getActions();
   }
 </script>
 

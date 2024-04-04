@@ -31,27 +31,34 @@
 </template>
 
 <script setup>
-  import { ref, inject, computed } from 'vue';
-  const newAction = ref({
+  import { inject, computed, reactive } from 'vue';
+  import { useActionsStore } from '../stores/ActionsStore'; 
+
+  const actionsStore = useActionsStore();
+
+  const newAction = reactive({
     text: '',
     scores: 10,
+    done: false,
   });
-  const addAction = inject('addAction');
+
   const isActionCreationOpen = inject('isActionCreationOpen');
   const currentAction = inject('currentAction');
   const isActionEditing = inject('isActionEditing');
 
   const isNewActionValid = computed(() => {
-    return newAction.value.text.length > 0 ? true : false;
+    return newAction.text.length > 0 ? true : false;
   });
-  console.log(isActionEditing);
-  if (isActionEditing.value === true) {
-    newAction.value = currentAction.value;
+
+  if (isActionEditing.value) {
+    newAction.text = currentAction.value.text;
+    newAction.scores = currentAction.value.scores;
   }
 
   function saveNewAction(action) {
     if (isNewActionValid.value) {
-      addAction(action);
+      actionsStore.addAction(action);
+      actionsStore.getActions();
       isActionCreationOpen.value = false;
       isActionEditing.value = false;
     } else {
