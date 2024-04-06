@@ -13,7 +13,9 @@
       <div class="avatar-block">
         <img class="avatar" src="../assets/images/icons/avatar-girl.svg" alt="avatar" />
         Василиса
-        <img class="settings" src="../assets/images/icons/settings.svg" alt="settings" />
+        <router-link to="/reg">
+          <img class="settings" src="../assets/images/icons/settings.svg" alt="settings" />
+        </router-link>
       </div>
     </div>
   </header>
@@ -61,6 +63,7 @@
           object-fit: cover;
         }
         .settings {
+          cursor: pointer;
           height: 40px;
           object-fit: cover;
         }

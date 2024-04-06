@@ -20,6 +20,15 @@ const router = createRouter({
       name: 'Parrents',
       component: () => import('./pages/ParrentsPage.vue'),
     },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('./pages/Login.vue'),
+    },{
+      path: '/reg',
+      name: 'SignUp',
+      component: () => import('./pages/SignUp.vue'),
+    },
   ],
 });
 
